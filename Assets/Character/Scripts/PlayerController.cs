@@ -75,8 +75,6 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         UpdateMovementState();
-        print(_characterController.velocity);
-
         HandleVerticalMovement();
         HandleLateralMovement();
     }
@@ -211,7 +209,6 @@ public class PlayerController : MonoBehaviour
         {
             RotatePlayerToTarget();
         }
-        // If rotation mismatch not within tolerance, or rotate to target is active, ROTATE
         else if (Mathf.Abs(RotationMismatch) > rotationTolerance || IsRotatingToTarget)
         {
             UpdateIdleRotation(rotationTolerance);
@@ -234,7 +231,6 @@ public class PlayerController : MonoBehaviour
         }
         _rotatingToTargetTimer -= Time.deltaTime;
 
-        // Rotate player
         if (_isRotatingClockwise && RotationMismatch > 0f ||
             !_isRotatingClockwise && RotationMismatch < 0f)
         {
@@ -284,7 +280,6 @@ public class PlayerController : MonoBehaviour
 
     private bool CanRun()
     {
-        // This means player is moving diagonally at 45 degrees or forward, if so, we can run
         return _playerLocomotionInput.MovementInput.y >= Mathf.Abs(_playerLocomotionInput.MovementInput.x);
     }
     #endregion

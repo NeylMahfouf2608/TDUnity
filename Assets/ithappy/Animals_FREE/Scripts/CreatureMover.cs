@@ -4,7 +4,6 @@ using UnityEngine.AI;
 
 namespace ithappy.Animals_FREE
 {
-    [RequireComponent(typeof(NavMeshAgent))]
     [RequireComponent(typeof(Animator))]
     [DisallowMultipleComponent]
     public class CreatureMover : MonoBehaviour
@@ -52,36 +51,43 @@ namespace ithappy.Animals_FREE
             m_Animator = GetComponent<Animator>();
 
             m_Animation = new AnimationHandler(m_Animator, m_VerticalID, m_StateID);
-
+            if(m_Agent)
+            {
             m_Agent.speed = m_WalkSpeed;
             m_Agent.angularSpeed = m_RotateSpeed;
             m_Agent.acceleration = 8f;
             m_Agent.updateRotation = true;
             m_Agent.updatePosition = true;
+
+            }
         }
 
         private void Start()
         {
+            if(m_Agent)
             SetRandomDestination(10, UnityEngine.Random.Range(0, 10) < 5);
         }
 
         private void Update()
         {
-            if (m_HasDestination)
+            if (m_Agent)
             {
-                float distance = Vector3.Distance(m_Transform.position, m_Target);
-                if (distance <= m_Agent.stoppingDistance + 0.1f)
+                if (m_HasDestination)
                 {
-                    SetRandomDestination(10, UnityEngine.Random.Range(0, 10) < 5);
+                    float distance = Vector3.Distance(m_Transform.position, m_Target);
+                    if (distance <= m_Agent.stoppingDistance + 0.1f)
+                    {
+                        SetRandomDestination(10, UnityEngine.Random.Range(0, 10) < 5);
+                    }
                 }
+
+                Vector3 velocity = m_Agent.velocity;
+                float speed = velocity.magnitude / (m_IsRun ? m_RunSpeed : m_WalkSpeed);
+                speed = Mathf.Clamp01(speed);
+
+                Vector2 animAxis = new Vector2(0, speed);
+                m_Animation.Animate(in animAxis, m_IsRun ? 1f : 0f, Time.deltaTime);
             }
-
-            Vector3 velocity = m_Agent.velocity;
-            float speed = velocity.magnitude / (m_IsRun ? m_RunSpeed : m_WalkSpeed);
-            speed = Mathf.Clamp01(speed);
-
-            Vector2 animAxis = new Vector2(0, speed);
-            m_Animation.Animate(in animAxis, m_IsRun ? 1f : 0f, Time.deltaTime);
         }
 
         private void OnAnimatorIK()
@@ -112,7 +118,7 @@ namespace ithappy.Animals_FREE
         {
             Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * radius;
             randomDirection += m_Transform.position;
-
+            if(m_Agent.isActiveAndEnabled)
             if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, radius, NavMesh.AllAreas))
             {
                 SetDestination(hit.position, isRun);
