@@ -23,7 +23,7 @@ public class ScoreManager : MonoBehaviour
     {
         score += 50;
         textMesh.text = "Score : " + score;
-        if(score == 150)
+        if (score == 150)
         {
             end.SetActive(true);
         }

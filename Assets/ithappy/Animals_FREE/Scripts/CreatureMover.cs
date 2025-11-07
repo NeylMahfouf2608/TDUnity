@@ -51,21 +51,21 @@ namespace ithappy.Animals_FREE
             m_Animator = GetComponent<Animator>();
 
             m_Animation = new AnimationHandler(m_Animator, m_VerticalID, m_StateID);
-            if(m_Agent)
+            if (m_Agent)
             {
-            m_Agent.speed = m_WalkSpeed;
-            m_Agent.angularSpeed = m_RotateSpeed;
-            m_Agent.acceleration = 8f;
-            m_Agent.updateRotation = true;
-            m_Agent.updatePosition = true;
+                m_Agent.speed = m_WalkSpeed;
+                m_Agent.angularSpeed = m_RotateSpeed;
+                m_Agent.acceleration = 8f;
+                m_Agent.updateRotation = true;
+                m_Agent.updatePosition = true;
 
             }
         }
 
         private void Start()
         {
-            if(m_Agent)
-            SetRandomDestination(10, UnityEngine.Random.Range(0, 10) < 5);
+            if (m_Agent)
+                SetRandomDestination(10, UnityEngine.Random.Range(0, 10) < 5);
         }
 
         private void Update()
@@ -118,12 +118,12 @@ namespace ithappy.Animals_FREE
         {
             Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * radius;
             randomDirection += m_Transform.position;
-            if(m_Agent.isActiveAndEnabled)
-            if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, radius, NavMesh.AllAreas))
-            {
-                SetDestination(hit.position, isRun);
-                return true;
-            }
+            if (m_Agent.isActiveAndEnabled)
+                if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, radius, NavMesh.AllAreas))
+                {
+                    SetDestination(hit.position, isRun);
+                    return true;
+                }
 
             return false;
         }

@@ -5,7 +5,8 @@ using UnityEngine.AI;
 
 [RequireComponent(typeof(AudioSource))]
 public class FreePoule : MonoBehaviour
-{ private AudioSource m_AudioSource;
+{
+    private AudioSource m_AudioSource;
     [SerializeField] private AudioClip m_Clip;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

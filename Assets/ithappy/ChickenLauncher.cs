@@ -1,12 +1,10 @@
 using UnityEngine;
-using UnityEngine.AI;
-using static Unity.VisualScripting.Member;
 
 public class ChickenLauncher : MonoBehaviour
 
 {
-    [SerializeField] GameObject freePoule; 
-    
+    [SerializeField] GameObject freePoule;
+
     private void OnTriggerStay(Collider other)
     {
         Animator tryPlayerAnimator = other.gameObject.GetComponent<Animator>();
